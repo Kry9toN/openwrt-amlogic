@@ -1,5 +1,8 @@
 #!/bin/bash
 
+REPO_URL=https://github.com/openwrt/openwrt
+REPO_BRANCH=openwrt-21.02
+
 function setup {
     export DEBIAN_FRONTEND=noninteractive
     rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
