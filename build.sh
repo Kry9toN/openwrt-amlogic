@@ -2,6 +2,7 @@
 
 REPO_URL=https://github.com/openwrt/openwrt
 REPO_BRANCH=openwrt-21.02
+ROOT_DIR=$(pwd)
 
 function setup {
     export DEBIAN_FRONTEND=noninteractive
@@ -13,19 +14,16 @@ function setup {
     apt-get autoremove --purge
     apt-get clean
     timedatectl set-timezone "Asia/Jakarta"
-    mkdir -p /workdir
-    chown $USER:$GROUPS /workdir
 }
 
 function clone {
-    df -hT $PWD
     git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-    ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 }
 
 function update_install {
     cd openwrt && ./scripts/feeds update -a
     cd openwrt && ./scripts/feeds install -a
+    cd $ROOT_DIR
     cp -f config/.config openwrt/.config
 }
 
@@ -36,7 +34,6 @@ function download {
 }
 
 function compile {
-    cd openwrt
     echo -e "$(nproc) thread compile"
     make -j$(nproc) || make -j1 || make -j1 V=s
     export FILE_DATE=$(date +"%Y.%m.%d.%H%M")
@@ -50,7 +47,8 @@ function compile {
 function armvirt {
     cd openwrt/bin/targets/*/*
     rm -rf packages
-    export TMPFILEPATH=$PWD
+    export TMPFILEPATH=$(pwd)
+    cd $ROOT_DIR
 }
 
 function build {
@@ -59,12 +57,11 @@ function build {
     [ -d openwrt-armvirt ] || mkdir -p openwrt-armvirt
     cp -f ../openwrt/bin/targets/*/*/*.tar.gz openwrt-armvirt/ && sync
     rm -rf ../openwrt && sync
-    rm -rf /workdir && sync
     chmod +x make.sh
-    ./make.sh -d -b s905x -k 5.9.16
+    $ROOT_DIR/make.sh -d -b s905x -k 5.9.16
     cd out/ && gzip *.img
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
-    export FILEPATH=$PWD
+    export FILEPATH=$(pwd)
 }
 
 setup
