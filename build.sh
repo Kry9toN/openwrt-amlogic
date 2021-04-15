@@ -1,12 +1,12 @@
 #!/bin/bash
 
 function setup {
-    sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
-    sudo -E apt-get -qq update
-    sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804)
-    sudo -E apt-get -qq autoremove --purge
-    sudo -E apt-get -qq clean
-    sudo timedatectl set-timezone "$TZ"
+    rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+    apt-get -qq update
+    apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804)
+    apt-get -qq autoremove --purge
+    apt-get -qq clean
+    sudo timedatectl set-timezone "Asia/Jakarta"
     sudo mkdir -p /workdir
     sudo chown $USER:$GROUPS /workdir
 }
@@ -33,8 +33,6 @@ function compile {
     cd openwrt
     echo -e "$(nproc) thread compile"
     make -j$(nproc) || make -j1 || make -j1 V=s
-    grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
-    [ -s DEVICE_NAME ] && echo "DEVICE_NAME=$(cat DEVICE_NAME)" >> $GITHUB_ENV
     export FILE_DATE=$(date +"%Y.%m.%d.%H%M")
     if [! -F ../openwrt/bin/targets/*/*/*.tar.gz]
     then
