@@ -5,5 +5,8 @@ name: build
 steps:
 - name: compile
   image: ubuntu:focal
+  environment:
+    token:
+      from_secret: token
   commands:
   - bash build.sh
