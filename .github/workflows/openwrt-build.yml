@@ -92,8 +92,8 @@ jobs:
         cp -f ../openwrt/bin/targets/*/*/*.tar.gz openwrt-armvirt/ && sync
         sudo rm -rf ../openwrt && sync
         sudo rm -rf /workdir && sync
-        sudo chmod +x make.sh
-        sudo ./make.sh -d -b s905x -k 5.9.16
+        sudo chmod +x make
+        sudo ./make -d -b s905x -k 5.9.16
         cd out/ && sudo gzip *.img
         cp -f ../openwrt-armvirt/*.tar.gz . && sync
         echo "FILEPATH=$PWD" >> $GITHUB_ENV

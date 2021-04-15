@@ -63,8 +63,8 @@ function build {
     [ -d openwrt-armvirt ] || mkdir -p openwrt-armvirt
     cp -f ../openwrt/bin/targets/*/*/*.tar.gz openwrt-armvirt/ && sync
     rm -rf ../openwrt && sync
-    chmod +x $ROOT_DIR/make.sh
-    $ROOT_DIR/make.sh -d -b s905x -k 5.9.16
+    chmod +x make
+    make -d -b s905x -k 5.9.16
     cd out/ && gzip *.img
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
     export FILEPATH=$(pwd)
