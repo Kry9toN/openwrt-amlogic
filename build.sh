@@ -3,10 +3,12 @@
 function setup {
     export DEBIAN_FRONTEND=noninteractive
     rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
-    apt-get -qq update
-    apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804)
-    apt-get -qq autoremove --purge
-    apt-get -qq clean
+    apt update
+    apt upgrade
+    apt install curl wget timedatectl
+    apt install $(curl -fsSL git.io/depends-ubuntu-1804)
+    apt autoremove --purge
+    apt clean
     timedatectl set-timezone "Asia/Jakarta"
     mkdir -p /workdir
     chown $USER:$GROUPS /workdir
@@ -35,7 +37,7 @@ function compile {
     echo -e "$(nproc) thread compile"
     make -j$(nproc) || make -j1 || make -j1 V=s
     export FILE_DATE=$(date +"%Y.%m.%d.%H%M")
-    if [! -F ../openwrt/bin/targets/*/*/*.tar.gz]
+    if [! -f "../openwrt/bin/targets/*/*/*.tar.gz"]
     then
         echo "Build error"
         exit 1
