@@ -3,12 +3,12 @@
 function setup {
     export DEBIAN_FRONTEND=noninteractive
     rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
-    apt update
-    apt upgrade
-    apt install curl wget timedatectl
-    apt install $(curl -fsSL git.io/depends-ubuntu-1804)
-    apt autoremove --purge
-    apt clean
+    apt-get update
+    apt-get upgrade -y
+    apt-get install curl wget -y
+    apt-get install $(curl -fsSL git.io/depends-ubuntu-1804) -y
+    apt-get autoremove --purge
+    apt-get clean
     timedatectl set-timezone "Asia/Jakarta"
     mkdir -p /workdir
     chown $USER:$GROUPS /workdir
