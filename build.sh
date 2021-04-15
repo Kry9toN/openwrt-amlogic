@@ -1,14 +1,15 @@
 #!/bin/bash
 
 function setup {
+    export DEBIAN_FRONTEND=noninteractive
     rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
     apt-get -qq update
     apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804)
     apt-get -qq autoremove --purge
     apt-get -qq clean
-    sudo timedatectl set-timezone "Asia/Jakarta"
-    sudo mkdir -p /workdir
-    sudo chown $USER:$GROUPS /workdir
+    timedatectl set-timezone "Asia/Jakarta"
+    mkdir -p /workdir
+    chown $USER:$GROUPS /workdir
 }
 
 function clone {
@@ -52,11 +53,11 @@ function build {
     cd amlogic-s9xxx-openwrt/
     [ -d openwrt-armvirt ] || mkdir -p openwrt-armvirt
     cp -f ../openwrt/bin/targets/*/*/*.tar.gz openwrt-armvirt/ && sync
-    sudo rm -rf ../openwrt && sync
-    sudo rm -rf /workdir && sync
-    sudo chmod +x make.sh
-    sudo ./make.sh -d -b s905x -k 5.9.16
-    cd out/ && sudo gzip *.img
+    rm -rf ../openwrt && sync
+    rm -rf /workdir && sync
+    chmod +x make.sh
+    ./make.sh -d -b s905x -k 5.9.16
+    cd out/ && gzip *.img
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
     export FILEPATH=$PWD
 }
