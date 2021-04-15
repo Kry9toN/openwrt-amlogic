@@ -5,6 +5,8 @@ REPO_BRANCH=openwrt-21.02
 ROOT_DIR=$(pwd)
 export FORCE_UNSAFE_CONFIGURE=1
 TZ=Asia/Jakarta
+FILE_DATE=$(date +"%Y.%m.%d.%H%M")
+
 function setup {
     export DEBIAN_FRONTEND=noninteractive
     rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
@@ -39,8 +41,9 @@ function download {
 function compile {
     echo -e "$(nproc) thread compile"
     make -j$(nproc) || make -j1 || make -j1 V=s
+    echo "List file on openwrt/bin/targets"
     ls $ROOT_DIR/openwrt/bin/targets/*/*/
-    if [ ! -f "$ROOT_DIR/openwrt/bin/targets/*/*/*.tar.gz" ]
+    if [ ! -f "$ROOT_DIR/openwrt/bin/targets/*/*/openwrt-armvirt-64-default-rootfs.tar.gz" ]
     then
         echo "Build error"
         exit 1
@@ -65,17 +68,16 @@ function build {
     cd out/ && gzip *.img
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
     export FILEPATH=$(pwd)
-    if [ ! -f "$FILEPATH/*.img.gz" ]
-    then
-        echo "Compile error"
-        exit 1
-    fi
+    echo "List file on open amlogic-s9xxx-openwrt/openwrt-armvirt"
+    ls
 }
 
 function upload {
-   chmod +x $ROOT_DIR/upload.sh
-   $ROOR_DIR/upload.sh github_api_token=$token owner=kry9ton repo=openwrt-amlogic filename=$FILEPATH/*.img.gz
+   mv $ROOT_DIR/upload.sh .
+   chmod +x upload.sh
+   ./upload.sh github_api_token=$token owner=kry9ton repo=openwrt-amlogic tag=${REPO_BRANCH}_${FILE_DATE} filename=$FILEPATH/*.img.gz
 }
+
 setup
 clone
 update_install
