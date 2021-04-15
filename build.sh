@@ -39,15 +39,11 @@ function download {
 }
 
 function compile {
+    echo "Start compile"
     echo -e "$(nproc) thread compile"
     make -j$(nproc) || make -j1 || make -j1 V=s
     echo "List file on openwrt/bin/targets"
     ls $ROOT_DIR/openwrt/bin/targets/*/*/
-    if [ ! -f "$ROOT_DIR/openwrt/bin/targets/*/*/openwrt-armvirt-64-default-rootfs.tar.gz" ]
-    then
-        echo "Build error"
-        exit 1
-    fi
 }
 
 function armvirt {
@@ -58,6 +54,7 @@ function armvirt {
 }
 
 function build {
+    echo "Start building firmware"
     git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git
     cd amlogic-s9xxx-openwrt/
     [ -d openwrt-armvirt ] || mkdir -p openwrt-armvirt
