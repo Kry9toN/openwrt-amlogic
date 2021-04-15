@@ -3,6 +3,7 @@
 REPO_URL=https://github.com/openwrt/openwrt
 REPO_BRANCH=openwrt-21.02
 ROOT_DIR=$(pwd)
+export FORCE_UNSAFE_CONFIGURE=1
 
 function setup {
     export DEBIAN_FRONTEND=noninteractive
@@ -21,8 +22,8 @@ function clone {
 }
 
 function update_install {
-    cd openwrt && ./scripts/feeds update -a
-    cd openwrt && ./scripts/feeds install -a
+    cd openwrt
+    ./scripts/feeds update -a && ./scripts/feeds install -a
     cd $ROOT_DIR
     cp -f config/.config openwrt/.config
 }
@@ -37,7 +38,7 @@ function compile {
     echo -e "$(nproc) thread compile"
     make -j$(nproc) || make -j1 || make -j1 V=s
     export FILE_DATE=$(date +"%Y.%m.%d.%H%M")
-    if [! -f "../openwrt/bin/targets/*/*/*.tar.gz"]
+    if [ ! -f "../openwrt/bin/targets/*/*/*.tar.gz" ]
     then
         echo "Build error"
         exit 1
@@ -57,7 +58,7 @@ function build {
     [ -d openwrt-armvirt ] || mkdir -p openwrt-armvirt
     cp -f ../openwrt/bin/targets/*/*/*.tar.gz openwrt-armvirt/ && sync
     rm -rf ../openwrt && sync
-    chmod +x make.sh
+    chmod +x $ROOT_DIR/make.sh
     $ROOT_DIR/make.sh -d -b s905x -k 5.9.16
     cd out/ && gzip *.img
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
