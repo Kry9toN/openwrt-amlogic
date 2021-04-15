@@ -32,6 +32,8 @@ function download {
     cd openwrt
     make defconfig
     make download -j8
+    find dl -size -1024c -exec ls -l {} \;
+    find dl -size -1024c -exec rm -f {} \;
 }
 
 function compile {
@@ -63,6 +65,11 @@ function build {
     cd out/ && gzip *.img
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
     export FILEPATH=$(pwd)
+    if [ ! -f "$FILEPATH/*.img.gz" ]
+    then
+        echo "Compile error"
+        exit 1
+    fi
 }
 
 function upload {
