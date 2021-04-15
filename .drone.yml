@@ -1,0 +1,9 @@
+kind: pipeline
+type: docker
+name: build
+
+steps:
+- name: compile openwrt
+  image: ubuntu:focal
+  commands:
+  - bash build.sh
