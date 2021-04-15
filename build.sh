@@ -41,7 +41,6 @@ function compile {
         echo "Build error"
         exit 1
     fi
-
 }
 
 function armvirt {
@@ -51,7 +50,6 @@ function armvirt {
 }
 
 function build {
-
     git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git
     cd amlogic-s9xxx-openwrt/
     [ -d openwrt-armvirt ] || mkdir -p openwrt-armvirt
@@ -64,3 +62,11 @@ function build {
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
     export FILEPATH=$PWD
 }
+
+setup
+clone
+update_install
+download
+compile
+armvirt
+build
