@@ -3,7 +3,7 @@ type: docker
 name: build
 
 steps:
-- name: compile openwrt
+- name: compile
   image: ubuntu:focal
   commands:
   - bash build.sh
