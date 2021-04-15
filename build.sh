@@ -45,11 +45,9 @@ function compile {
 }
 
 function armvirt {
-    if [! -F openwrt/bin/targets/*/*] return
     cd openwrt/bin/targets/*/*
     rm -rf packages
     export TMPFILEPATH=$PWD
-
 }
 
 function build {
