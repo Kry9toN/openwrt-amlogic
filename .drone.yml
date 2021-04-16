@@ -14,3 +14,5 @@ steps:
     api_key:
       from_secret: token
     files: amlogic-s9xxx-openwrt/out/*
+  when:
+    event: tag

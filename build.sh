@@ -13,7 +13,7 @@ function setup {
     apt-get update
     apt-get upgrade -y
     apt-get -qq install curl wget -y
-    apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804) uuid-runtime -y
+    apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804) uuid-runtime mount -y
     apt-get autoremove --purge
     apt-get clean
     ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
