@@ -13,7 +13,7 @@ function setup {
     apt-get update
     apt-get upgrade -y
     apt-get -qq install curl wget -y
-    apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804) -y
+    apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804) uuid-runtime -y
     apt-get autoremove --purge
     apt-get clean
     ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -69,12 +69,6 @@ function build {
     ls
 }
 
-function upload {
-   mv $ROOT_DIR/upload.sh .
-   chmod +x upload.sh
-   ./upload.sh github_api_token=$token owner=kry9ton repo=openwrt-amlogic tag=${REPO_BRANCH} filename=$FILEPATH/*.img.gz
-}
-
 setup
 clone
 update_install
@@ -82,4 +76,3 @@ download
 compile
 armvirt
 build
-upload

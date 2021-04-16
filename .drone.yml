@@ -5,8 +5,12 @@ name: build
 steps:
 - name: compile
   image: ubuntu:focal
-  environment:
-    token:
-      from_secret: token
   commands:
   - bash build.sh
+
+- name: publish
+  image: plugins/github-release
+  settings:
+    api_key:
+      from_secret: token
+    files: amlogic-s9xxx-openwrt/out/*
