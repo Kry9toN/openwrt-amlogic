@@ -61,11 +61,11 @@ function build {
     cp -f ../openwrt/bin/targets/*/*/*.tar.gz openwrt-armvirt/ && sync
     rm -rf ../openwrt && sync
     chmod +x make
-    make -d -b s905x -k 5.9.14
+    ./make -d -b s905x -k 5.9.16
     cd out/ && gzip *.img
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
     export FILEPATH=$(pwd)
-    echo "List file on open amlogic-s9xxx-openwrt/openwrt-armvirt"
+    echo "List file on open amlogic-s9xxx-openwrt/out"
     ls
 }
 
