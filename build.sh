@@ -61,7 +61,7 @@ function build {
     cp -f ../openwrt/bin/targets/*/*/*.tar.gz openwrt-armvirt/ && sync
     rm -rf ../openwrt && sync
     chmod +x make
-    make -d -b s905x -k 5.9.16
+    make -d -b s905x -k 5.9.14
     cd out/ && gzip *.img
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
     export FILEPATH=$(pwd)
@@ -72,7 +72,7 @@ function build {
 function upload {
    mv $ROOT_DIR/upload.sh .
    chmod +x upload.sh
-   ./upload.sh github_api_token=$token owner=kry9ton repo=openwrt-amlogic tag=${REPO_BRANCH}_${FILE_DATE} filename=$FILEPATH/*.img.gz
+   ./upload.sh github_api_token=$token owner=kry9ton repo=openwrt-amlogic tag=${REPO_BRANCH} filename=$FILEPATH/*.img.gz
 }
 
 setup
