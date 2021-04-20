@@ -44,7 +44,11 @@ jobs:
       run: cd openwrt && ./scripts/feeds install -a
 
     - name: Load custom configuration
-      run: cp -f config/.config openwrt/.config
+      run: |
+        cp -f config/.config openwrt/.config
+        chmod +x package.sh
+        cd openwrt
+        $GITHUB_WORKSPACE/package.sh
 
     - name: Download package
       id: package
