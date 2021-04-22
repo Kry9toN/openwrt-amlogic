@@ -75,4 +75,4 @@ update_install
 download
 compile
 armvirt
-build
+# build
