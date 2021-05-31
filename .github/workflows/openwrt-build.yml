@@ -6,7 +6,7 @@ on:
 
 env:
   REPO_URL: https://github.com/openwrt/openwrt
-  REPO_BRANCH: openwrt-19.07
+  REPO_BRANCH: openwrt-21.02
   TZ: Asia/Jakarta
 
 jobs:
@@ -97,7 +97,7 @@ jobs:
         sudo rm -rf ../openwrt && sync
         sudo rm -rf /workdir && sync
         sudo chmod +x make
-        sudo ./make -d -b s905x -k 5.9.16
+        sudo ./make -d -b s905x -k 5.12.8.TF
         cd out/ && sudo gzip *.img
         cp -f ../openwrt-armvirt/*.tar.gz . && sync
         echo "FILEPATH=$PWD" >> $GITHUB_ENV
