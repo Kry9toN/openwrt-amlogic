@@ -14,5 +14,3 @@ steps:
     api_key:
       from_secret: token
     files: $ROOT_DIR/openwrt/bin/targets/*/*/*
-  when:
-    event: tag
