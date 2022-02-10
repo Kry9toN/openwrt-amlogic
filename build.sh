@@ -26,6 +26,7 @@ function clone {
 function update_install {
     cd openwrt
     ./scripts/feeds update -a && ./scripts/feeds install -a
+    $ROOT_DIR/package.sh
     cd $ROOT_DIR
     cp -f config/.config openwrt/.config
 }
@@ -61,7 +62,7 @@ function build {
     cp -f ../openwrt/bin/targets/*/*/*.tar.gz openwrt-armvirt/ && sync
     rm -rf ../openwrt && sync
     chmod +x make
-    ./make -d -b s905x -k 5.9.16
+    ./make -d -b s905x -k 5.4.170
     cd out/ && gzip *.img
     cp -f ../openwrt-armvirt/*.tar.gz . && sync
     export FILEPATH=$(pwd)
@@ -75,4 +76,4 @@ update_install
 download
 compile
 armvirt
-# build
+build
